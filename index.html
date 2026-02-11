@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Amor v5.0</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    background:#111;
+    font-family: 'Courier New', monospace;
+    color:#00ffcc;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+/* SOBRE */
+.envelope-container{
+    position:absolute;
+    text-align:center;
+}
+
+.envelope{
+    width:250px;
+    height:150px;
+    background:#7a2c3b;
+    position:relative;
+    cursor:pointer;
+    border-radius:8px;
+}
+
+.flap{
+    position:absolute;
+    top:0;
+    width:0;
+    height:0;
+    border-left:125px solid transparent;
+    border-right:125px solid transparent;
+    border-bottom:75px solid #9e3b4e;
+    transform-origin:top;
+    transition:0.8s;
+}
+
+.open .flap{
+    transform:rotateX(180deg);
+}
+
+.envelope-text{
+    color:white;
+    margin-top:20px;
+    font-family:Georgia, serif;
+}
+
+/* CONTENIDO */
+.content{
+    display:none;
+    width:80%;
+    max-width:600px;
+    text-align:left;
+    font-size:1.1em;
+}
+
+.fade{
+    animation:fadeIn 1.5s forwards;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+
+.center{
+    text-align:center;
+    margin-top:40px;
+}
+
+button{
+    padding:10px 20px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+    margin:10px;
+    font-family:Georgia, serif;
+}
+
+.yes{
+    background:white;
+    color:#7a2c3b;
+}
+
+.no{
+    background:#333;
+    color:white;
+}
+</style>
+</head>
+<body>
+
+<div class="envelope-container" id="envelopeBox">
+    <div class="envelope" onclick="openEnvelope()">
+        <div class="flap"></div>
+    </div>
+    <div class="envelope-text">Haz clic para abrir 💌</div>
+</div>
+
+<div class="content" id="mainContent"></div>
+
+<script>
+
+function openEnvelope(){
+    document.querySelector(".envelope").classList.add("open");
+    setTimeout(()=>{
+        document.getElementById("envelopeBox").style.display="none";
+        startSystem();
+    },800);
+}
+
+function startSystem(){
+    const content = document.getElementById("mainContent");
+    content.style.display="block";
+    content.classList.add("fade");
+
+    let lines = [
+        "Iniciando Sistema Amoroso v5.0...",
+        "Verificando recuerdos...",
+        "Detectando 5 años de relación estable...",
+        "Analizando risas compartidas...",
+        "Estado: Sentimientos extremadamente altos.",
+        "Advertencia: Se aproxima 14 de febrero..."
+    ];
+
+    let i=0;
+
+    function typeLine(){
+        if(i < lines.length){
+            content.innerHTML += lines[i] + "<br><br>";
+            i++;
+            setTimeout(typeLine,1000);
+        }else{
+            setTimeout(showEmotion,1500);
+        }
+    }
+
+    typeLine();
+}
+
+function showEmotion(){
+    const content = document.getElementById("mainContent");
+    content.innerHTML = `
+        <div style="font-family:Georgia, serif; color:white; text-align:center;">
+            <h2>Después de 5 años...</h2>
+            <p>No eres solo mi novio.</p>
+            <p>Eres mi persona favorita.</p>
+            <p>Y quiero seguir eligiéndote.</p>
+            <h3>¿Renovamos versión 6.0? ❤️</h3>
+
+            <div class="center">
+                <button class="yes" onclick="accepted()">Actualizar ahora</button>
+                <button class="no" id="noBtn">Posponer</button>
+            </div>
+        </div>
+    `;
+
+    const noBtn = document.getElementById("noBtn");
+
+    noBtn.addEventListener("mouseover",()=>{
+        noBtn.innerText="No recomendado 😌";
+    });
+}
+
+function accepted(){
+    document.body.innerHTML=`
+    <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#111;color:white;font-family:Georgia,serif;text-align:center;">
+        <div>
+            <h1>Actualización completada ❤️</h1>
+            <p>Contrato renovado oficialmente.</p>
+            <p>Prepárate para un San Valentín inolvidable.</p>
+        </div>
+    </div>
+    `;
+}
+
+</script>
+
+</body>
+</html>
