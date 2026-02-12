@@ -1,265 +1,288 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Amor Eterno</title>
-    <style>
-        :root {
-            --color-sobre: #c8a9a3;
-            --color-sobre-oscuro: #ba9891;
-            --color-solapa: #e0c2bd;
-            --terminal-bg: #111;
-            --terminal-text: #00ffcc;
-            --love-color: #ff4d6d;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Amor Eterno</title>
 
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: #f3e9e6;
-            font-family: 'Courier New', monospace;
-            overflow: hidden;
-        }
+<style>
+:root {
+    --color-sobre: #c8a9a3;
+    --color-sobre-oscuro: #ba9891;
+    --color-solapa: #e0c2bd;
+    --terminal-bg: #111;
+    --terminal-text: #00ffcc;
+    --love-color: #ff4d6d;
+}
 
-        #instrucciones {
-            color: #8a7a77;
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-            animation: flotar 2s infinite ease-in-out;
-        }
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #f3e9e6;
+    font-family: 'Courier New', monospace;
+    overflow: hidden;
+}
 
-        @keyframes flotar {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
+#instrucciones {
+    color: #8a7a77;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    animation: flotar 2s infinite ease-in-out;
+}
 
-        /* --- ESCENA DEL SOBRE --- */
-        .escena {
-            position: relative;
-            width: 400px;
-            height: 280px;
-            cursor: pointer;
-            transition: transform 0.8s;
-        }
-        .escena.zoom { transform: scale(1.1) translateY(80px); }
+@keyframes flotar {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
 
-        .carta {
-            position: absolute;
-            top: 25px;
-            left: 20px;
-            width: 360px;
-            height: 250px;
-            background: var(--terminal-bg);
-            border-radius: 8px;
-            color: var(--terminal-text);
-            padding: 20px;
-            box-sizing: border-box;
-            z-index: 2;
-            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .escena.abierta .carta { transform: translateY(-180px); height: 320px; }
+/* ESCENA */
+.escena {
+    position: relative;
+    width: 400px;
+    height: 280px;
+    cursor: pointer;
+    transition: transform 0.8s;
+}
+.escena.zoom { transform: scale(1.1) translateY(80px); }
 
-        .sobre-fondo { position: absolute; bottom: 0; width: 100%; height: 240px; background: var(--color-sobre); border-radius: 0 0 10px 10px; z-index: 1; }
-        .sobre-frente { position: absolute; bottom: 0; width: 100%; height: 240px; background: var(--color-sobre-oscuro); clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%); z-index: 3; border-radius: 0 0 10px 10px; }
-        .solapa { position: absolute; top: 40px; width: 100%; height: 160px; background: var(--color-solapa); clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top; transition: transform 0.6s; z-index: 4; }
-        .escena.abierta .solapa { transform: rotateX(180deg); z-index: 0; }
+.carta {
+    position: absolute;
+    top: 25px;
+    left: 20px;
+    width: 360px;
+    height: 250px;
+    background: var(--terminal-bg);
+    border-radius: 8px;
+    color: var(--terminal-text);
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 2;
+    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.escena.abierta .carta { transform: translateY(-180px); height: 320px; }
 
-        #textoTerminal { line-height: 1.5; font-size: 12px; }
-        .cursor { display: inline-block; width: 8px; height: 15px; background: var(--terminal-text); animation: parpadeo 0.8s infinite; }
-        @keyframes parpadeo { 50% { opacity: 0; } }
+.sobre-fondo { position: absolute; bottom: 0; width: 100%; height: 240px; background: var(--color-sobre); border-radius: 0 0 10px 10px; z-index: 1; }
+.sobre-frente { position: absolute; bottom: 0; width: 100%; height: 240px; background: var(--color-sobre-oscuro); clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%); z-index: 3; border-radius: 0 0 10px 10px; }
+.solapa { position: absolute; top: 40px; width: 100%; height: 160px; background: var(--color-solapa); clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top; transition: transform 0.6s; z-index: 4; }
+.escena.abierta .solapa { transform: rotateX(180deg); z-index: 0; }
 
-        /* --- BOTONES --- */
-        .contenedor-botones { display: none; justify-content: center; gap: 20px; margin-top: 15px; width: 100%; }
-        .btn { padding: 10px 20px; border: 1px solid var(--terminal-text); background: transparent; color: var(--terminal-text); font-family: 'Courier New', monospace; cursor: pointer; font-size: 11px; font-weight: bold; }
-        .btn:hover { background: var(--terminal-text); color: var(--terminal-bg); box-shadow: 0 0 10px var(--terminal-text); }
-        #btnNo { position: relative; transition: all 0.2s; }
+#textoTerminal { line-height: 1.5; font-size: 12px; }
+.cursor { display: inline-block; width: 8px; height: 15px; background: var(--terminal-text); animation: parpadeo 0.8s infinite; }
+@keyframes parpadeo { 50% { opacity: 0; } }
 
-        /* --- GALERÍA --- */
-        #galeriaModal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.98);
-            z-index: 2000;
-            justify-content: center; align-items: center;
-        }
-        .galeria-cont { position: relative; text-align: center; width: 90%; }
-        #imgGaleria { max-width: 100%; max-height: 75vh; border: 3px solid white; border-radius: 5px; box-shadow: 0 0 30px rgba(255,255,255,0.2); }
-        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: none; color: white; font-size: 30px; cursor: pointer; padding: 10px; border-radius: 50%; }
-        .prev { left: 10px; } .next { right: 10px; }
-        .cerrar-galeria { margin-top: 25px; color: var(--love-color); cursor: pointer; font-weight: bold; letter-spacing: 2px; }
+/* BOTONES */
+.contenedor-botones { display: none; justify-content: center; gap: 20px; margin-top: 15px; width: 100%; }
+.btn { padding: 10px 20px; border: 1px solid var(--terminal-text); background: transparent; color: var(--terminal-text); font-family: 'Courier New', monospace; cursor: pointer; font-size: 11px; font-weight: bold; }
+.btn:hover { background: var(--terminal-text); color: var(--terminal-bg); box-shadow: 0 0 10px var(--terminal-text); }
+#btnNo { position: relative; transition: all 0.2s; }
 
-        /* --- LLUVIA DE CORAZONES MASIVA --- */
-        .heart { position: fixed; font-size: 25px; z-index: 1500; pointer-events: none; animation: moveUp var(--d) linear forwards; }
-        @keyframes moveUp { 
-            0% { transform: translateY(110vh) rotate(0deg) scale(0.5); opacity: 1; } 
-            100% { transform: translateY(-20vh) rotate(360deg) scale(1.5); opacity: 0; } 
-        }
+/* GALERÍA */
+#galeriaModal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.98);
+    z-index: 2000;
+    justify-content: center; align-items: center;
+}
+.galeria-cont { position: relative; text-align: center; width: 90%; }
+#imgGaleria { max-width: 100%; max-height: 75vh; border: 3px solid white; border-radius: 5px; box-shadow: 0 0 30px rgba(255,255,255,0.2); }
 
-        /* --- CERTIFICADO --- */
-        #certificado { 
-            display: none; margin-top: 15px; color: #ffcc00; font-weight: bold; font-size: 11px; 
-            text-align: center; border: 2px double #ffcc00; padding: 10px; background: rgba(255, 204, 0, 0.1);
-        }
-    </style>
+/* NUEVAS FLECHAS */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(8px);
+    transition: all 0.25s ease;
+}
+
+.nav-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke: white;
+    stroke-width: 2.5;
+    fill: none;
+}
+
+.nav-btn:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-50%) scale(1.12);
+}
+
+.prev { left: 10px; }
+.next { right: 10px; }
+
+.cerrar-galeria { margin-top: 25px; color: var(--love-color); cursor: pointer; font-weight: bold; letter-spacing: 2px; }
+
+/* CORAZONES */
+.heart { position: fixed; font-size: 25px; z-index: 1500; pointer-events: none; animation: moveUp var(--d) linear forwards; }
+@keyframes moveUp { 
+    0% { transform: translateY(110vh) rotate(0deg) scale(0.5); opacity: 1; } 
+    100% { transform: translateY(-20vh) rotate(360deg) scale(1.5); opacity: 0; } 
+}
+
+#certificado { 
+    display: none; margin-top: 15px; color: #ffcc00; font-weight: bold; font-size: 11px; 
+    text-align: center; border: 2px double #ffcc00; padding: 10px; background: rgba(255, 204, 0, 0.1);
+}
+</style>
 </head>
+
 <body>
 
-    <div id="instrucciones">Toca para abrir mi corazón 💌</div>
+<div id="instrucciones">Toca para abrir 💌</div>
 
-    <div class="escena" id="mainScene" onclick="abrir()">
-        <div class="solapa"></div>
-        <div class="carta">
-            <div id="textoTerminal"></div>
-            <span class="cursor" id="cursor" style="display:none;"></span>
-            
-            <div class="contenedor-botones" id="botones">
-                <button class="btn" onclick="aceptar()">SÍ, RENOVAR CONTRATO</button>
-                <button id="btnNo" class="btn">NO</button>
-            </div>
-
-            <div id="certificado">
-                📜 CERTIFICADO DE AMOR ETERNO<br>
-                ESTADO: RENOVADO POR 5 AÑOS MÁS<br>
-                TE AMO MÁS QUE AYER, PERO MENOS QUE MAÑANA.
-            </div>
+<div class="escena" id="mainScene" onclick="abrir()">
+    <div class="solapa"></div>
+    <div class="carta">
+        <div id="textoTerminal"></div>
+        <span class="cursor" id="cursor" style="display:none;"></span>
+        
+        <div class="contenedor-botones" id="botones">
+            <button class="btn" onclick="aceptar()">SÍ, RENOVAR CONTRATO</button>
+            <button id="btnNo" class="btn">NO</button>
         </div>
-        <div class="sobre-fondo"></div>
-        <div class="sobre-frente"></div>
-    </div>
 
-    <div id="galeriaModal">
-        <div class="galeria-cont">
-            <button class="nav-btn prev" onclick="cambiarFoto(-1)">❮</button>
-            <img id="imgGaleria" src="" alt="Nuestra Foto">
-            <button class="nav-btn next" onclick="cambiarFoto(1)">❯</button>
-            <div class="cerrar-galeria" onclick="cerrarGaleria()">[ CERRAR MOMENTOS ]</div>
+        <div id="certificado">
+            📜 CERTIFICADO DE AMOR ETERNO<br>
+            ESTADO: RENOVADO POR 5 AÑOS MÁS<br>
+            TE QUIERO MÁS QUE LA TRUCHA AL TRUCHO 
         </div>
     </div>
+    <div class="sobre-fondo"></div>
+    <div class="sobre-frente"></div>
+</div>
 
-    <script>
-        // --- 1. AQUÍ TUS FOTOS ---
-        const fotos = [
-    "foto1.jpeg",
-    "foto2.jpeg",
-    "foto3.jpeg"
-];
+<div id="galeriaModal">
+    <div class="galeria-cont">
+        <button class="nav-btn prev" onclick="cambiarFoto(-1)">
+            <svg viewBox="0 0 24 24">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+        </button>
 
+        <img id="imgGaleria" src="" alt="Nuestra Foto">
+
+        <button class="nav-btn next" onclick="cambiarFoto(1)">
+            <svg viewBox="0 0 24 24">
+                <path d="M9 6l6 6-6 6"/>
+            </svg>
+        </button>
+
+        <div class="cerrar-galeria" onclick="cerrarGaleria()"> CERRAR RECUERDOS </div>
+    </div>
+</div>
+
+<script>
+const fotos = ["foto1.jpeg","foto2.jpeg","foto3.jpeg"];
 let fotoActual = 0;
 
+let lineas = [
+"> Iniciando protocolo San Valentín...",
+"> Historia iniciada en Abril 2021.",
+"> Próximo logro desbloqueado: 5 años juntos.",
+"> Sistema confirma: seguimos eligiéndonos cada día.",
+"> 5 años detectados llenos de felicidad.",
+"> Momentos difíciles: superados juntos.",
+"> [ERROR] No se puede medir tanto amor.",
+"> Estado del corazón: COMPLETO 100%.",
+"> ¡Feliz San Valentín, bebe! ❤️",
+"> ¿Aceptas renovar nuestro contrato?"
+];
 
-        // --- 2. PERSONALIZA TU TEXTO AQUÍ ---
-        let lineas = [
-            "> Iniciando protocolo San Valentín...",
-            "> Analizando base de datos emocional...",
-            "> 5 años detectados llenos de felicidad.",
-            "> [ERROR] No se puede medir tanto amor.",
-            "> Estado del corazón: TOTALMENTE TUYO.",
-            "> ¡Feliz San Valentín, mi vida! ❤️",
-            "> ¿Aceptas renovar nuestro contrato?"
-        ];
+let abierto = false;
+let intentosNo = 0;
 
-        let abierto = false;
-        let intentosNo = 0;
+function abrir(){
+if(abierto) return;
+abierto=true;
+document.getElementById("instrucciones").style.opacity="0";
+const escena=document.getElementById("mainScene");
+escena.classList.add("abierta");
+escena.classList.add("zoom");
+setTimeout(()=>{document.getElementById("cursor").style.display="inline-block";escribir();},1000);
+}
 
-        function abrir() {
-            if (abierto) return;
-            abierto = true;
-            document.getElementById("instrucciones").style.opacity = "0";
-            const escena = document.getElementById("mainScene");
-            escena.classList.add("abierta");
-            escena.classList.add("zoom");
-            setTimeout(() => {
-                document.getElementById("cursor").style.display = "inline-block";
-                escribir();
-            }, 1000);
-        }
+function escribir(){
+const cont=document.getElementById("textoTerminal");
+let l=0;
+function sig(){
+if(l<lineas.length){
+let c=0,txt=lineas[l];
+function t(){
+if(c<txt.length){cont.innerHTML+=txt[c];c++;setTimeout(t,40);}
+else{cont.innerHTML+="<br>";l++;setTimeout(sig,600);}
+}
+t();
+}else{
+document.getElementById("cursor").style.display="none";
+document.getElementById("botones").style.display="flex";
+}}
+sig();
+}
 
-        function escribir() {
-            const contenedor = document.getElementById("textoTerminal");
-            let l = 0;
-            function sig() {
-                if (l < lineas.length) {
-                    let c = 0;
-                    let txt = lineas[l];
-                    function t() {
-                        if (c < txt.length) {
-                            contenedor.innerHTML += txt[c];
-                            c++;
-                            setTimeout(t, 40);
-                        } else {
-                            contenedor.innerHTML += "<br>";
-                            l++;
-                            setTimeout(sig, 600);
-                        }
-                    }
-                    t();
-                } else {
-                    document.getElementById("cursor").style.display = "none";
-                    document.getElementById("botones").style.display = "flex";
-                }
-            }
-            sig();
-        }
+function aceptar(){crearLluviaCorazones();setTimeout(mostrarGaleria,500);}
 
-        function aceptar() {
-            crearLluviaCorazones();
-            setTimeout(mostrarGaleria, 500);
-        }
+function crearLluviaCorazones(){
+const colores=["#ff4d6d","#ff758f","#c9184a","#ffb3c1","#ffffff"];
+for(let i=0;i<100;i++){
+setTimeout(()=>{
+const h=document.createElement("div");
+h.innerHTML="❤️";
+h.className="heart";
+h.style.left=Math.random()*100+"vw";
+h.style.color=colores[Math.floor(Math.random()*colores.length)];
+h.style.setProperty('--d',(Math.random()*3+2)+"s");
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),5000);
+},i*50);
+}}
 
-        // Lluvia masiva de corazones
-        function crearLluviaCorazones() {
-            const colores = ["#ff4d6d", "#ff758f", "#c9184a", "#ffb3c1", "#ffffff"];
-            for(let i=0; i<100; i++) {
-                setTimeout(() => {
-                    const h = document.createElement("div");
-                    h.innerHTML = "❤️";
-                    h.className = "heart";
-                    h.style.left = Math.random() * 100 + "vw";
-                    h.style.color = colores[Math.floor(Math.random() * colores.length)];
-                    h.style.setProperty('--d', (Math.random() * 3 + 2) + "s");
-                    document.body.appendChild(h);
-                    setTimeout(() => h.remove(), 5000);
-                }, i * 50);
-            }
-        }
+function mostrarGaleria(){
+document.getElementById("imgGaleria").src=fotos[fotoActual];
+document.getElementById("galeriaModal").style.display="flex";
+}
 
-        function mostrarGaleria() {
-            document.getElementById("imgGaleria").src = fotos[fotoActual];
-            document.getElementById("galeriaModal").style.display = "flex";
-        }
+function cambiarFoto(dir){
+fotoActual=(fotoActual+dir+fotos.length)%fotos.length;
+document.getElementById("imgGaleria").src=fotos[fotoActual];
+}
 
-        function cambiarFoto(dir) {
-            fotoActual = (fotoActual + dir + fotos.length) % fotos.length;
-            document.getElementById("imgGaleria").src = fotos[fotoActual];
-        }
+function cerrarGaleria(){
+document.getElementById("galeriaModal").style.display="none";
+document.getElementById("botones").style.display="none";
+document.getElementById("certificado").style.display="block";
+}
 
-        function cerrarGaleria() {
-            document.getElementById("galeriaModal").style.display = "none";
-            document.getElementById("botones").style.display = "none";
-            document.getElementById("certificado").style.display = "block";
-        }
-
-        // El NO juguetón
-        const btnNo = document.getElementById('btnNo');
-        btnNo.addEventListener('mouseover', () => {
-            intentosNo++;
-            if (intentosNo < 6) {
-                btnNo.style.transform = `translate(${(Math.random()-0.5)*120}px, ${(Math.random()-0.5)*60}px)`;
-            } else {
-                btnNo.style.position = 'fixed';
-                btnNo.style.left = Math.random() * 85 + 5 + '%';
-                btnNo.style.top = Math.random() * 85 + 5 + '%';
-            }
-        });
-    </script>
+const btnNo=document.getElementById('btnNo');
+btnNo.addEventListener('mouseover',()=>{
+intentosNo++;
+if(intentosNo<6){
+btnNo.style.transform=`translate(${(Math.random()-0.5)*120}px, ${(Math.random()-0.5)*60}px)`;
+}else{
+btnNo.style.position='fixed';
+btnNo.style.left=Math.random()*85+5+'%';
+btnNo.style.top=Math.random()*85+5+'%';
+}});
+</script>
 </body>
 </html>
+
+
