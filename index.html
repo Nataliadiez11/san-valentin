@@ -156,7 +156,7 @@ body {
 }
 
 #btnNo {
-position: fixed; /* Cambiado a fixed para que siempre use coordenadas de pantalla */
+position: absolute;
   z-index: 9999;
   transition: none !important; /* Movimiento instantáneo sin animaciones que lo retrasen */
   touch-action: none; /* Evita que en móviles lo puedan pulsar fácilmente */
@@ -387,49 +387,50 @@ crearLluviaCorazones();
 
 const btnNo = document.getElementById('btnNo');
 
-function moverBotonNo() {
-  // Calculamos posiciones aleatorias dentro de la ventana
-  // Dejamos un margen de 50px para que no se pegue a los bordes
-  const x = Math.random() * (window.innerWidth - btnNo.offsetWidth - 50) + 25;
-  const y = Math.random() * (window.innerHeight - btnNo.offsetHeight - 50) + 25;
-  
-  btnNo.style.left = `${x}px`;
-  btnNo.style.top = `${y}px`;
+// Función para mover el botón a una posición aleatoria segura
+function huirDelRaton() {
+  // Calculamos límites para que el botón no se salga de la pantalla visible
+  const padding = 50;
+  const anchoMascara = window.innerWidth - btnNo.offsetWidth - padding;
+  const altoMascara = window.innerHeight - btnNo.offsetHeight - padding;
+
+  const randomX = Math.floor(Math.random() * anchoMascara) + (padding / 2);
+  const randomY = Math.floor(Math.random() * altoMascara) + (padding / 2);
+
+  btnNo.style.position = 'fixed';
+  btnNo.style.left = `${randomX}px`;
+  btnNo.style.top = `${randomY}px`;
 }
 
-// Evento principal: Se dispara mucho antes de que el ratón haga clic
+// DETECCIÓN POR PROXIMIDAD:
+// Si el ratón se acerca a menos de 80px, el botón huye
 document.addEventListener('mousemove', (e) => {
   const rect = btnNo.getBoundingClientRect();
-  
-  // Creamos un "margen de seguridad" de 60 píxeles alrededor del botón
-  const margen = 60;
-  
-  const mouseX = e.clientX;
-  const mouseY = e.clientY;
+  const centroBtnX = rect.left + rect.width / 2;
+  const centroBtnY = rect.top + rect.height / 2;
 
-  // Si el ratón entra en el área del botón + el margen de seguridad...
-  if (
-    mouseX >= rect.left - margen &&
-    mouseX <= rect.right + margen &&
-    mouseY >= rect.top - margen &&
-    mouseY <= rect.bottom + margen
-  ) {
-    moverBotonNo();
+  // Calculamos la distancia entre el ratón y el centro del botón
+  const distancia = Math.hypot(e.clientX - centroBtnX, e.clientY - centroBtnY);
+
+  if (distancia < 80) {
+    huirDelRaton();
   }
 });
 
-// Por si intentan usar la tecla TAB para seleccionarlo y dar ENTER
-btnNo.addEventListener('focus', moverBotonNo);
+// Por si acaso logran tocarlo con un movimiento ultra rápido
+btnNo.addEventListener('mouseover', huirDelRaton);
 
-// Por si logran hacer clic con un movimiento ultra sónico
+// Si intentan hacer clic (en móviles por ejemplo)
 btnNo.addEventListener('click', (e) => {
   e.preventDefault();
-  moverBotonNo();
+  huirDelRaton();
+  alert("¡Buen intento! Pero el destino dice que SÍ. ❤️");
 });
 </script>
 
 </body>
 </html>
+
 
 
 
