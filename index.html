@@ -155,10 +155,13 @@ body {
   box-shadow: 0 0 10px var(--terminal-text);
 }
 
+
 #btnNo {
-  position: absolute; /* Cambiamos a absoluto para control total */
-  transition: all 0.1s ease; /* Movimiento instantáneo */
-  z-index: 1000;
+
+  position: relative;
+
+  transition: all 0.2s;
+
 }
 /* GALERÍA */
 #galeriaModal {
@@ -383,51 +386,30 @@ document.getElementById("certificado").style.display="block";
 crearLluviaCorazones(); 
 }
 
-const btnNo = document.getElementById('btnNo');
+const btnNo=document.getElementById('btnNo');
 
-// Función para mover el botón a una posición aleatoria segura
-function huirDelRaton() {
-  // Calculamos límites para que el botón no se salga de la pantalla visible
-  const padding = 50;
-  const anchoMascara = window.innerWidth - btnNo.offsetWidth - padding;
-  const altoMascara = window.innerHeight - btnNo.offsetHeight - padding;
+btnNo.addEventListener('mouseover',()=>{
 
-  const randomX = Math.floor(Math.random() * anchoMascara) + (padding / 2);
-  const randomY = Math.floor(Math.random() * altoMascara) + (padding / 2);
+intentosNo++;
 
-  btnNo.style.position = 'fixed';
-  btnNo.style.left = `${randomX}px`;
-  btnNo.style.top = `${randomY}px`;
-}
+if(intentosNo<6){
 
-// DETECCIÓN POR PROXIMIDAD:
-// Si el ratón se acerca a menos de 80px, el botón huye
-document.addEventListener('mousemove', (e) => {
-  const rect = btnNo.getBoundingClientRect();
-  const centroBtnX = rect.left + rect.width / 2;
-  const centroBtnY = rect.top + rect.height / 2;
+btnNo.style.transform=`translate(${(Math.random()-0.5)*120}px, ${(Math.random()-0.5)*60}px)`;
 
-  // Calculamos la distancia entre el ratón y el centro del botón
-  const distancia = Math.hypot(e.clientX - centroBtnX, e.clientY - centroBtnY);
+}else{
 
-  if (distancia < 80) {
-    huirDelRaton();
-  }
-});
+btnNo.style.position='fixed';
 
-// Por si acaso logran tocarlo con un movimiento ultra rápido
-btnNo.addEventListener('mouseover', huirDelRaton);
+btnNo.style.left=Math.random()*85+5+'%';
 
-// Si intentan hacer clic (en móviles por ejemplo)
-btnNo.addEventListener('click', (e) => {
-  e.preventDefault();
-  huirDelRaton();
-  alert("¡Buen intento! Pero el destino dice que SÍ. ❤️");
-});
+btnNo.style.top=Math.random()*85+5+'%';
+
+}});
 </script>
 
 </body>
 </html>
+
 
 
 
