@@ -157,11 +157,10 @@ body {
 
 
 #btnNo {
-
   position: relative;
-
-  transition: all 0.2s;
-
+  transition: none !important; /* Eliminamos el retraso para que no lo cacen */
+  z-index: 1000;
+  touch-action: none; /* Evita que lo toquen en móviles */
 }
 /* GALERÍA */
 #galeriaModal {
@@ -386,29 +385,48 @@ document.getElementById("certificado").style.display="block";
 crearLluviaCorazones(); 
 }
 
-const btnNo=document.getElementById('btnNo');
+const btnNo = document.getElementById('btnNo');
 
-btnNo.addEventListener('mouseover',()=>{
+// Función para mover el botón a un lugar seguro y visible
+function huir() {
+  // Calculamos límites para que no se salga de la pantalla
+  const x = Math.random() * (window.innerWidth - btnNo.offsetWidth - 40) + 20;
+  const y = Math.random() * (window.innerHeight - btnNo.offsetHeight - 40) + 20;
+  
+  btnNo.style.position = 'fixed';
+  btnNo.style.left = x + 'px';
+  btnNo.style.top = y + 'px';
+}
 
-intentosNo++;
+// CAMPO DE FUERZA: Detecta el ratón antes de que llegue al botón
+document.addEventListener('mousemove', (e) => {
+  const rect = btnNo.getBoundingClientRect();
+  const margen = 70; // Distancia a la que el botón empieza a escapar
 
-if(intentosNo<6){
+  if (
+    e.clientX > rect.left - margen &&
+    e.clientX < rect.right + margen &&
+    e.clientY > rect.top - margen &&
+    e.clientY < rect.bottom + margen
+  ) {
+    huir();
+  }
+});
 
-btnNo.style.transform=`translate(${(Math.random()-0.5)*120}px, ${(Math.random()-0.5)*60}px)`;
+// Por si logran entrar muy rápido (flick) o usan tabulador
+btnNo.addEventListener('mouseenter', huir);
+btnNo.addEventListener('focus', huir);
 
-}else{
-
-btnNo.style.position='fixed';
-
-btnNo.style.left=Math.random()*85+5+'%';
-
-btnNo.style.top=Math.random()*85+5+'%';
-
-}});
+// Bloqueo total de clics
+btnNo.addEventListener('click', (e) => {
+  e.preventDefault();
+  huir();
+});
 </script>
 
 </body>
 </html>
+
 
 
 
