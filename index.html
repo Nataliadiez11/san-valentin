@@ -216,10 +216,11 @@ body {
 /* CORAZONES */
 .heart {
   position: fixed;
-  font-size: 25px;
-  z-index: 1500;
+  font-size: 30px;
+  z-index: 9999;
   pointer-events: none;
   animation: moveUp var(--d) linear forwards;
+  filter: drop-shadow(0 0 5px rgba(255, 77, 109, 0.8));
 }
 
 @keyframes moveUp {
@@ -338,20 +339,32 @@ crearLluviaCorazones();
 setTimeout(mostrarGaleria,500);
 }
 
-function crearLluviaCorazones(){
-const colores=["#ff4d6d","#ff758f","#c9184a","#ffb3c1","#ffffff"];
-for(let i=0;i<100;i++){
-setTimeout(()=>{
-const h=document.createElement("div");
-h.innerHTML="❤️";
-h.className="heart";
-h.style.left=Math.random()*100+"vw";
-h.style.color=colores[Math.floor(Math.random()*colores.length)];
-h.style.setProperty('--d',(Math.random()*3+2)+"s");
-document.body.appendChild(h);
-setTimeout(()=>h.remove(),5000);
-},i*50);
-}}
+function crearLluviaCorazones() {
+  // Colores más vivos y sólidos
+  const colores = ["#ff0000", "#ff4d6d", "#ff758f", "#ffffff", "#ffb3c1"];
+  
+  // Aumentamos a 250 corazones
+  for (let i = 0; i < 250; i++) {
+    setTimeout(() => {
+      const h = document.createElement("div");
+      h.innerHTML = "❤️";
+      h.className = "heart";
+      h.style.left = Math.random() * 100 + "vw";
+      h.style.color = colores[Math.floor(Math.random() * colores.length)];
+      
+      // Velocidades variadas: unos rápidos y otros lentos
+      h.style.setProperty('--d', (Math.random() * 2 + 3) + "s");
+      
+      // Tamaños aleatorios para dar profundidad
+      h.style.fontSize = (Math.random() * 20 + 20) + "px";
+      
+      document.body.appendChild(h);
+      
+      // Se eliminan solos al terminar
+      setTimeout(() => h.remove(), 5000);
+    }, i * 20); // Salen muy seguidos para crear el efecto de explosión
+  }
+}
 
 function mostrarGaleria(){
 document.getElementById("imgGaleria").src=fotos[fotoActual];
@@ -367,6 +380,7 @@ function cerrarGaleria(){
 document.getElementById("galeriaModal").style.display="none";
 document.getElementById("botones").style.display="none";
 document.getElementById("certificado").style.display="block";
+crearLluviaCorazones(); 
 }
 
 const btnNo=document.getElementById('btnNo');
@@ -383,3 +397,4 @@ btnNo.style.top=Math.random()*85+5+'%';
 
 </body>
 </html>
+
