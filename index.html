@@ -156,12 +156,10 @@ body {
 }
 
 #btnNo {
-position: absolute;
-  z-index: 9999;
-  transition: none !important; /* Movimiento instantáneo sin animaciones que lo retrasen */
-  touch-action: none; /* Evita que en móviles lo puedan pulsar fácilmente */
+  position: absolute; /* Cambiamos a absoluto para control total */
+  transition: all 0.1s ease; /* Movimiento instantáneo */
+  z-index: 1000;
 }
-
 /* GALERÍA */
 #galeriaModal {
   display: none;
@@ -430,6 +428,7 @@ btnNo.addEventListener('click', (e) => {
 
 </body>
 </html>
+
 
 
 
